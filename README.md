@@ -1,2 +1,2 @@
-# lib-xp-cvpartner
-XP library for interacting with CV-partner
+# CV-partner library for Enonic XP
+
