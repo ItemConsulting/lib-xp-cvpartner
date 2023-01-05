@@ -1,0 +1,78 @@
+plugins {
+  id 'java'
+  id 'maven-publish'
+  id "com.github.node-gradle.node" version '3.4.0'
+  id 'com.enonic.xp.base' version '3.1.0'
+}
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+dependencies {
+  compile "com.enonic.xp:portal-api:${xpVersion}"
+}
+
+repositories {
+  mavenCentral()
+  xp.enonicRepo()
+  maven { url 'https://jitpack.io' }
+}
+
+node {
+  download = true
+  version = '16.13.1'
+}
+
+task npmInstallForce(type: NpmTask) {
+  description = 'Update all project node dependencies'
+  args = ['install', '--force']
+}
+
+task cleanNode(type: org.gradle.api.tasks.Delete) {
+  delete 'node_modules'
+}
+
+task serverWebpack(type: NodeTask, dependsOn: npmInstall) {
+  environment = ['NODE_ENV': nodeEnvironment()]
+  // args = [ '--config', 'webpack.server.config.babel.js', '--color']
+  args = ['--config', 'webpack.server.config.js', '--color']
+  description = 'Build server JS.'
+  inputs.dir 'src/main'
+  outputs.dir "${buildDir}/resources/main"
+  script = file('node_modules/webpack-cli/bin/cli.js')
+}
+
+processResources {
+  include '**/*'
+  exclude '**/.gitkeep'
+  exclude '**/tsconfig.*.json'
+  exclude '**/*.es'
+  exclude '**/*.es6'
+  exclude '**/*.ts'
+  includeEmptyDirs false
+}
+
+jar {
+  exclude 'assets/styles/**/*.js'
+
+  dependsOn += serverWebpack
+}
+
+jar.outputs.dir "${buildDir}/resources/main"
+
+def nodeEnvironment() {
+  def environments = [prod: 'production', dev: 'development']
+  def nodeEnv = environments[hasProperty('env') ? env : 'prod']
+  return nodeEnv != null ? nodeEnv : 'production'
+}
+
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      from components.java
+      groupId group
+      artifactId projectName
+      version version
+    }
+  }
+}
