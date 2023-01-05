@@ -1,6 +1,7 @@
 # CV-partner library for Enonic XP
 
 ## Usage
+
 This library contains a task (`"cvpartner-import"`) that can be run in the main.ts of another application:
 ```typescript
 run(
@@ -16,18 +17,24 @@ run(
 );
 ```
 
-## Events that can be emitted from this library:
-- custom.cvpartner.create
-- custom.cvpartner.modify
+## Events
+
+Events that can be emitted from this library:
+
+- `custom.cvpartner.create`
+- `custom.cvpartner.modify`
 
 # Configuration
-Add the following configuration to you *XP_HOME/config/com.myapp.cfg*-file:
+
+Add the following configuration to you *XP_HOME/config/com.mycompany.cfg*-file:
+
 ```ini
-cvPartnerEmployeeUrl=
+cvPartnerEmployeeUrl=https://<mycompany>.cvpartner.com/api/v1/users
 cvPartnerApiKey=<api key>
 ```
-- cvPartnerEmployeeUrl, Endpoint for which to fetch data about cv-partner employee profiles. referenced app.config.cvPartnerEmployeeUrl
-- cvPartnerApiKey key identifier used to authenticate request for endpoints such as cvPartnerEmployeeUrl. referenced app.config.cvPartnerApiKey
+
+- `cvPartnerEmployeeUrl`, Endpoint for which to fetch data about cv-partner employee profiles. referenced `app.config.cvPartnerEmployeeUrl`
+- `cvPartnerApiKey` key identifier used to authenticate request for endpoints such as `cvPartnerEmployeeUrl`. referenced `app.config.cvPartnerApiKey`
 
 ### Building
 
@@ -46,5 +53,5 @@ Deploy locally for testing purposes:
 ```
 ## Deploy to Jitpack
 
-Go to the [Jitpack page for lib-xp-turbo](https://jitpack.io/#no.item/lib-xp-turbo) to deploy from Github (after
-[creating a new versioned release](https://github.com/ItemConsulting/lib-xp-turbo/releases/new)).
+Go to the [Jitpack page for lib-xp-cvpartner](https://jitpack.io/#no.item/lib-xp-cvpartner) to deploy from GitHub (after
+[creating a new versioned release](https://github.com/ItemConsulting/lib-xp-cvpartner/releases/new)).
