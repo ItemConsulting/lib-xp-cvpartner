@@ -1,4 +1,4 @@
-import { CVPartnerEmployee, fetchEmployees } from "/lib/cvpartner/cvpartner-client";
+import { CVPartnerEmployee, fetchEmployees } from "/lib/cvpartner/client";
 import { create as createRepo, get as getRepo } from "/lib/xp/repo";
 import { connect } from "/lib/xp/node";
 import { send } from "/lib/xp/event";
@@ -33,7 +33,7 @@ export function run(): void {
     const currentEmployee = getCVPartnerEmployeeByEmail(employee.email);
 
     const contentHasChanged = currentEmployee
-      ? hasChanged(removeEmptyArrayOrNullAttributes(currentEmployee.data), removeEmptyArrayOrNullAttributes(employee))
+      ? prepareForComparison(currentEmployee.data) !== prepareForComparison(employee)
       : true;
 
     try {
@@ -84,18 +84,12 @@ function updateCounter([changed, unchanged]: UpdateResult, contentHasChanged: bo
   return contentHasChanged ? [changed + 1, unchanged] : [changed, unchanged + 1];
 }
 
-function hasChanged<T>(x: T, y: T): boolean {
-  return prepareForComparison(x) !== prepareForComparison(y);
-}
-
-function removeEmptyArrayOrNullAttributes(o: CVPartnerEmployee): CVPartnerEmployee {
+function prepareForComparison(o: CVPartnerEmployee): string {
   //eliminate all the null, empty strings and empty array values from the data
-  return JSON.parse(JSON.stringify(o), (key, value) =>
+  const obj = JSON.parse(JSON.stringify(o), (key, value) =>
     value === null || value === "" || (value instanceof Array && !value.length) ? undefined : value
   );
-}
 
-//Handle arrays with one object as object per XP requirements
-function prepareForComparison(obj: unknown): string {
+  //Handle arrays with one object as object per XP requirements
   return JSON.stringify(obj).replace(/]|[[]/g, "");
 }

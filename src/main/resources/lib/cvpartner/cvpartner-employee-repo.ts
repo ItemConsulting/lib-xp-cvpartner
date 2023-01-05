@@ -1,5 +1,5 @@
 import { connect, type ConnectParams, type Node } from "/lib/xp/node";
-import type { CVPartnerEmployee } from "/lib/cvpartner/cvpartner-client";
+import type { CVPartnerEmployee } from "/lib/cvpartner/client";
 
 const REPO_NAME_CVPARTNER = "no.item.cvpartner.employees";
 

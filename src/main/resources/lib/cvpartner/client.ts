@@ -1,10 +1,8 @@
 import { request } from "/lib/http-client";
 
-const CVPARTNER_EMPLOYEE_DEFAULT_URL = "";
-
 export function fetchEmployees(): Array<CVPartnerEmployee> {
   const res = request({
-    url: app.config.cvPartnerEmployeeUrl ?? CVPARTNER_EMPLOYEE_DEFAULT_URL,
+    url: getEmployeeUrl(),
     contentType: "application/json",
     method: "GET",
     headers: {
@@ -19,8 +17,21 @@ export function fetchEmployees(): Array<CVPartnerEmployee> {
   }
 }
 
-export function getEmployeeApiKey(): string {
-  return <string>app.config.cvPartnerApiKey;
+function getEmployeeApiKey(): string {
+  const cvPartnerApiKey = app.config.cvPartnerApiKey;
+  if (cvPartnerApiKey === undefined) {
+    throw "Could not find CV-Partner API key";
+  }
+
+  return cvPartnerApiKey;
+}
+
+function getEmployeeUrl(): string {
+  const cvPartnerEmployeeUrl = app.config.cvPartnerEmployeeUrl;
+  if (cvPartnerEmployeeUrl === undefined) {
+    throw "Could not find CV-Partner employee URL";
+  }
+  return cvPartnerEmployeeUrl;
 }
 
 export interface CVPartnerEmployee {

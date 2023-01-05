@@ -1,7 +1,7 @@
 {
-  "name": "@item-enonic-types/lib-turbo-streams",
-  "version": "1.0.4",
-  "description": "Type definitions for lib-xp-turbo",
+  "name": "@item-enonic-types/lib-cvpartner",
+  "version": "0.0.1-SNAPSHOT",
+  "description": "Type definitions for lib-cvpartner",
   "license": "MIT",
   "files": [
     "*.d.ts",

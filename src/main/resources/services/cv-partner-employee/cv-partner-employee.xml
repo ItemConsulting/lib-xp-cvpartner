@@ -1,0 +1,6 @@
+<service>
+  <allow>
+    <principal>role:system.authenticated</principal>
+  </allow>
+</service>
+
