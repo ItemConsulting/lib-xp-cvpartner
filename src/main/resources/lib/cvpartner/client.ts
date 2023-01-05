@@ -8,6 +8,9 @@ export function fetchEmployees(): Array<CVPartnerEmployee> {
     headers: {
       Authorization: `Bearer ${getEmployeeApiKey()}`,
     },
+    params: {
+      offset: "0",
+    },
   });
 
   if (res.status === 200 && res.body) {
@@ -31,6 +34,7 @@ function getEmployeeUrl(): string {
   if (cvPartnerEmployeeUrl === undefined) {
     throw "Could not find CV-Partner employee URL";
   }
+
   return cvPartnerEmployeeUrl;
 }
 

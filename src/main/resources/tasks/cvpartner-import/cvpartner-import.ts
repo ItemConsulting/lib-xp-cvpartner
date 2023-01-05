@@ -9,7 +9,7 @@ import {
   CVPartnerEmployeeNode,
   getCVPartnerEmployeeByEmail,
   SOURCE_CVPARTNER_EMPLOYEES,
-} from "/lib/cvpartner/cvpartner-employee-repo";
+} from "/lib/cvpartner/employee-repo";
 
 type UpdateResult = [changed: number, unchanged: number];
 
