@@ -1,6 +1,6 @@
 import { connect, type ConnectParams, type Node } from "/lib/xp/node";
 import type { CVPartnerEmployee } from "/lib/cvpartner/client";
-import { forceArray, notNullOrUndefined } from "/lib/cvpartner/utils";
+import { forceArray } from "/lib/cvpartner/utils";
 
 const REPO_NAME_CVPARTNER = "no.item.cvpartner.employees";
 
@@ -26,18 +26,17 @@ export function getCVPartnerEmployeeByEmail(email: string): Node<CVPartnerEmploy
   return hit?.id ? connection.get<CVPartnerEmployeeNode>(hit.id) ?? undefined : undefined;
 }
 
-export function getCVPartnerEmployees(searchParams?: string): Array<Node<CVPartnerEmployeeNode>> {
-  const conn = connect(SOURCE_CVPARTNER_EMPLOYEES);
+export function getCVPartnerEmployeesByIds(ids: Array<string>): Array<Node<CVPartnerEmployeeNode>> {
+  const connection = connect(SOURCE_CVPARTNER_EMPLOYEES);
 
-  const ids = conn
+  const res = connection
     .query({
-      count: 1000,
-      query: searchParams ? `data.name LIKE '*${searchParams}*' OR data.email LIKE '${searchParams}*'` : "",
+      count: ids.length,
       filters: {
         boolean: {
-          mustNot: {
+          must: {
             ids: {
-              values: ["000-000-000-000"],
+              values: ids,
             },
           },
         },
@@ -45,7 +44,7 @@ export function getCVPartnerEmployees(searchParams?: string): Array<Node<CVPartn
     })
     .hits.map((hit) => hit.id);
 
-  return forceArray(conn.get<CVPartnerEmployeeNode>(ids)).filter(notNullOrUndefined);
+  return forceArray(connection.get<CVPartnerEmployeeNode>(res));
 }
 
 export function getCVPartnerEmployeeById(id: string): Node<CVPartnerEmployeeNode> | null {
@@ -56,4 +55,5 @@ export function getCVPartnerEmployeeById(id: string): Node<CVPartnerEmployeeNode
 
 export interface CVPartnerEmployeeNode {
   data: CVPartnerEmployee;
+  biography?: string;
 }
