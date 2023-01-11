@@ -35,7 +35,7 @@ export function fetchEmployeeProfile(userId: string, cvId: string): CVPartnerEmp
   if (res.status === 200 && res.body) {
     return JSON.parse(res.body) as CVPartnerEmployeeProfile;
   } else {
-    log.info("Could not get CVPartner Employee profile for userId: " + userId + " with cvId: " + cvId);
+    log.warning("Could not get CVPartner Employee profile for userId: " + userId + " with cvId: " + cvId);
     return undefined;
   }
 }
