@@ -29,16 +29,16 @@ Events that can be emitted from this library:
 Add the following configuration to you *XP_HOME/config/com.mycompany.cfg*-file:
 
 ```ini
-cvPartnerEmployeeUrl=https://<mycompany>.cvpartner.com/api/v1/users
+cvPartnerBaseUrl=https://<mycompany>.cvpartner.com
 cvPartnerApiKey=<api key>
 ```
 
-- `cvPartnerEmployeeUrl`, Endpoint for which to fetch data about cv-partner employee profiles. referenced `app.config.cvPartnerEmployeeUrl`
-- `cvPartnerApiKey` key identifier used to authenticate request for endpoints such as `cvPartnerEmployeeUrl`. referenced `app.config.cvPartnerApiKey`
+- `cvPartnerBaseUrl`, Base url to fetch data about cv-partner employee profiles. referenced `app.config.cvPartnerBaseUrl`
+- `cvPartnerApiKey` key identifier used to authenticate request for endpoints such as `cvPartnerBaseUrl/{path}` + . referenced `app.config.cvPartnerApiKey`
 
 ### Building
 
-To build he project run the following code
+To build the project run the following code
 
 ```bash
 ./gradlew build

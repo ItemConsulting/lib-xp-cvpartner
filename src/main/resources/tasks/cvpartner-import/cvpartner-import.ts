@@ -1,4 +1,9 @@
-import { CVPartnerEmployee, fetchEmployees } from "/lib/cvpartner/client";
+import {
+  CVPartnerEmployee,
+  CVPartnerEmployeeProfile,
+  fetchEmployeeProfile,
+  fetchEmployees,
+} from "/lib/cvpartner/client";
 import { create as createRepo, get as getRepo } from "/lib/xp/repo";
 import { connect } from "/lib/xp/node";
 import { send } from "/lib/xp/event";
@@ -10,6 +15,7 @@ import {
   getCVPartnerEmployeeByEmail,
   SOURCE_CVPARTNER_EMPLOYEES,
 } from "/lib/cvpartner/employee-repo";
+import { notNullOrUndefined } from "/lib/cvpartner/utils";
 
 type UpdateResult = [changed: number, unchanged: number];
 
@@ -30,10 +36,12 @@ export function run(): void {
   const cvPartnerEmployees = fetchEmployees().filter((employee) => employee.email !== "" && employee.email !== null);
 
   const [changed, unchanged] = cvPartnerEmployees.reduce((updateResult, employee, index) => {
+    const cvPartnerProfile = fetchEmployeeProfile(employee.id, employee.default_cv_id);
+
     const currentEmployee = getCVPartnerEmployeeByEmail(employee.email);
 
     const contentHasChanged = currentEmployee
-      ? prepareForComparison(currentEmployee.data) !== prepareForComparison(employee)
+      ? prepareForComparison(currentEmployee.data.cvPartnerEmployee) !== prepareForComparison(employee)
       : true;
 
     try {
@@ -41,7 +49,7 @@ export function run(): void {
         const data = connection.create<CVPartnerEmployeeNode>({
           _name: sanitize(employee.email),
           _inheritsPermissions: true,
-          data: employee,
+          data: { cvPartnerEmployee: employee, cvPartnerEmployeeProfile: cvPartnerProfile },
         });
 
         send({
@@ -52,7 +60,7 @@ export function run(): void {
         const data = connection.modify<CVPartnerEmployeeNode>({
           key: currentEmployee._id,
           editor: (node) => {
-            node.data = employee;
+            node.data = { cvPartnerEmployee: employee, cvPartnerEmployeeProfile: cvPartnerProfile };
             return node;
           },
         });
@@ -92,4 +100,10 @@ function prepareForComparison(o: CVPartnerEmployee): string {
 
   //Handle arrays with one object as object per XP requirements
   return JSON.stringify(obj).replace(/]|[[]/g, "");
+}
+
+export function getBiography(cvPartnerProfile: CVPartnerEmployeeProfile): string | undefined {
+  return notNullOrUndefined(cvPartnerProfile.key_qualifications)
+    ? cvPartnerProfile?.key_qualifications[0].long_description?.no
+    : undefined;
 }
