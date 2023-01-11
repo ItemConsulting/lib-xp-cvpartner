@@ -4,7 +4,7 @@ const CVPARTNER_USERS_PATH = "/api/v1/users";
 const CVPARTNER_PROFILE_PATH = "/api/v3/cvs/";
 export function fetchEmployees(): Array<CVPartnerEmployee> {
   const res = request({
-    url: getEmployeeUrl(),
+    url: `${getCVPartnerBaseUrl()}${CVPARTNER_USERS_PATH}`,
     contentType: "application/json",
     method: "GET",
     headers: {
@@ -24,7 +24,7 @@ export function fetchEmployees(): Array<CVPartnerEmployee> {
 
 export function fetchEmployeeProfile(userId: string, cvId: string): CVPartnerEmployeeProfile | undefined {
   const res = request({
-    url: getEmployeeProfileUrl(userId, cvId),
+    url: `${getCVPartnerBaseUrl()}${CVPARTNER_PROFILE_PATH}/${userId}/${cvId}`,
     contentType: "application/json",
     method: "GET",
     headers: {
@@ -41,32 +41,19 @@ export function fetchEmployeeProfile(userId: string, cvId: string): CVPartnerEmp
 }
 
 function getEmployeeApiKey(): string {
-  const CVPARTNER_API_KEY = app.config.CVPARTNER_API_KEY;
-  if (CVPARTNER_API_KEY === undefined) {
+  const cvPartnerApiKey = app.config.cvPartnerApiKey;
+  if (cvPartnerApiKey === undefined) {
     throw "Could not find CV-Partner API key";
   }
-
-  return CVPARTNER_API_KEY;
-}
-
-function getEmployeeUrl(): string {
-  const CVPARTNER_BASE_URL = getCVPartnerBaseUrl();
-
-  return `${CVPARTNER_BASE_URL}${CVPARTNER_USERS_PATH}`;
-}
-
-function getEmployeeProfileUrl(userId: string, cvId: string): string {
-  const CVPARTNER_BASE_URL = getCVPartnerBaseUrl();
-
-  return `${CVPARTNER_BASE_URL}${CVPARTNER_PROFILE_PATH}/${userId}/${cvId}`;
+  return cvPartnerApiKey;
 }
 
 function getCVPartnerBaseUrl(): string {
-  const CVPARTNER_BASE_URL = app.config.CVPARTNER_BASE_URL;
-  if (CVPARTNER_BASE_URL === undefined) {
+  const cvPartnerBaseUrl = app.config.cvPartnerBaseUrl;
+  if (cvPartnerBaseUrl === undefined) {
     throw "Could not find CV-Partner base URL";
   }
-  return CVPARTNER_BASE_URL;
+  return cvPartnerBaseUrl;
 }
 
 export interface CVPartnerEmployee {
