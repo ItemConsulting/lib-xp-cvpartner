@@ -29,12 +29,12 @@ Events that can be emitted from this library:
 Add the following configuration to you *XP_HOME/config/com.mycompany.cfg*-file:
 
 ```ini
-cvPartnerBaseUrl=https://<mycompany>.cvpartner.com/
-cvPartnerApiKey=<api key>
+CVPARTNER_BASE_URL=https://<mycompany>.cvpartner.com
+CVPARTNER_API_KEY=<api key>
 ```
 
-- `cvPartnerBaseUrl`, Base url to fetch data about cv-partner employee profiles. referenced `app.config.cvPartnerBaseUrl`
-- `cvPartnerApiKey` key identifier used to authenticate request for endpoints such as `cvPartnerEmployeeUrl`. referenced `app.config.cvPartnerApiKey`
+- `CVPARTNER_BASE_URL`, Base url to fetch data about cv-partner employee profiles. referenced `app.config.CVPARTNER_BASE_URL`
+- `CVPARTNER_API_KEY` key identifier used to authenticate request for endpoints such as `CVPARTNER_BASE_URL/{path}` + . referenced `app.config.CVPARTNER_API_KEY`
 
 ### Building
 

@@ -41,18 +41,15 @@ export function run(): void {
     const currentEmployee = getCVPartnerEmployeeByEmail(employee.email);
 
     const contentHasChanged = currentEmployee
-      ? prepareForComparison(currentEmployee.data) !== prepareForComparison(employee)
+      ? prepareForComparison(currentEmployee.data.cvPartnerEmployee) !== prepareForComparison(employee)
       : true;
-
-    const bio = notNullOrUndefined(cvPartnerProfile) ? getBiography(cvPartnerProfile) : undefined;
 
     try {
       if (!currentEmployee) {
         const data = connection.create<CVPartnerEmployeeNode>({
           _name: sanitize(employee.email),
           _inheritsPermissions: true,
-          data: employee,
-          biography: bio,
+          data: { cvPartnerEmployee: employee, cvPartnerEmployeeProfile: cvPartnerProfile },
         });
 
         send({
@@ -63,8 +60,7 @@ export function run(): void {
         const data = connection.modify<CVPartnerEmployeeNode>({
           key: currentEmployee._id,
           editor: (node) => {
-            node.data = employee;
-            node.biography = bio;
+            node.data = { cvPartnerEmployee: employee, cvPartnerEmployeeProfile: cvPartnerProfile };
             return node;
           },
         });
@@ -106,7 +102,7 @@ function prepareForComparison(o: CVPartnerEmployee): string {
   return JSON.stringify(obj).replace(/]|[[]/g, "");
 }
 
-function getBiography(cvPartnerProfile: CVPartnerEmployeeProfile): string | undefined {
+export function getBiography(cvPartnerProfile: CVPartnerEmployeeProfile): string | undefined {
   return notNullOrUndefined(cvPartnerProfile.key_qualifications)
     ? cvPartnerProfile?.key_qualifications[0].long_description?.no
     : undefined;

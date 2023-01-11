@@ -1,6 +1,7 @@
 import { connect, type ConnectParams, type Node } from "/lib/xp/node";
 import type { CVPartnerEmployee } from "/lib/cvpartner/client";
 import { forceArray } from "/lib/cvpartner/utils";
+import { CVPartnerEmployeeProfile } from "/lib/cvpartner/client";
 
 const REPO_NAME_CVPARTNER = "no.item.cvpartner.employees";
 
@@ -17,7 +18,7 @@ export function getCVPartnerEmployeeByEmail(email: string): Node<CVPartnerEmploy
     count: 1,
     filters: {
       hasValue: {
-        field: "data.email",
+        field: "data.cvPartnerEmployee.email",
         values: [email],
       },
     },
@@ -54,6 +55,8 @@ export function getCVPartnerEmployeeById(id: string): Node<CVPartnerEmployeeNode
 }
 
 export interface CVPartnerEmployeeNode {
-  data: CVPartnerEmployee;
-  biography?: string;
+  data: {
+    cvPartnerEmployee: CVPartnerEmployee;
+    cvPartnerEmployeeProfile?: CVPartnerEmployeeProfile;
+  };
 }

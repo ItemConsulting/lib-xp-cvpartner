@@ -19,9 +19,9 @@ export function get(req: CustomSelectorServiceRequest): CustomSelectorServiceRes
         hits: cvPartnerEmployees.map((employee) => {
           return {
             id: employee._id,
-            displayName: employee.data.name + ` (${employee.data.email})`,
-            description: employee.data.role ?? "",
-            iconUrl: employee.data.image.url ?? "",
+            displayName: employee.data.cvPartnerEmployee.name + ` (${employee.data.cvPartnerEmployee.email})`,
+            description: employee.data.cvPartnerEmployee.role ?? "",
+            iconUrl: employee.data.cvPartnerEmployee.image.url ?? "",
           };
         }),
       },
@@ -37,9 +37,11 @@ export function get(req: CustomSelectorServiceRequest): CustomSelectorServiceRes
   const result = connection.query({
     start,
     count,
-    query: searchParams ? `data.name LIKE '*${searchParams}*' OR data.email LIKE '${searchParams}*'` : "",
+    query: searchParams
+      ? `data.cvPartnerEmployee.name LIKE '*${searchParams}*' OR data.cvPartnerEmployee.email LIKE '${searchParams}*'`
+      : "",
     sort: {
-      field: "data.name",
+      field: "data.cvPartnerEmployee.name",
       direction: "ASC",
     },
     filters: {
@@ -63,9 +65,9 @@ export function get(req: CustomSelectorServiceRequest): CustomSelectorServiceRes
       hits: hits.map((employee) => {
         return {
           id: employee._id,
-          displayName: employee.data.name + ` (${employee.data.email})`,
-          description: employee.data.role ?? "",
-          iconUrl: employee.data.image.url ?? "",
+          displayName: employee.data.cvPartnerEmployee.name + ` (${employee.data.cvPartnerEmployee.email})`,
+          description: employee.data.cvPartnerEmployee.role ?? "",
+          iconUrl: employee.data.cvPartnerEmployee.image.url ?? "",
         };
       }),
     },
