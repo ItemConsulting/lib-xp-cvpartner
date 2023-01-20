@@ -21,7 +21,7 @@ export function get(req: CustomSelectorServiceRequest): CustomSelectorServiceRes
             id: employee._id,
             displayName: employee.data.cvPartnerEmployee.name + ` (${employee.data.cvPartnerEmployee.email})`,
             description: employee.data.cvPartnerEmployee.role ?? "",
-            iconUrl: employee.data.cvPartnerEmployee.image.url ?? "",
+            iconUrl: employee.data.cvPartnerEmployee.image?.url ?? "",
           };
         }),
       },
@@ -67,7 +67,7 @@ export function get(req: CustomSelectorServiceRequest): CustomSelectorServiceRes
           id: employee._id,
           displayName: employee.data.cvPartnerEmployee.name + ` (${employee.data.cvPartnerEmployee.email})`,
           description: employee.data.cvPartnerEmployee.role ?? "",
-          iconUrl: employee.data.cvPartnerEmployee.image.url ?? "",
+          iconUrl: employee.data.cvPartnerEmployee.image?.url ?? "",
         };
       }),
     },

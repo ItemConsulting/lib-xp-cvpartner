@@ -90,7 +90,7 @@ export interface CVPartnerEmployee {
   selected_tag_ids?: Array<string> | null;
   override_language_code?: string;
   default_cv_template_id?: string;
-  image: {
+  image?: {
     url?: string;
     thumb?: {
       url?: string;
