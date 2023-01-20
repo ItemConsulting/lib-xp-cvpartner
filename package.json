@@ -13,7 +13,7 @@
     "dist:server": "cross-env NODE_ENV=production webpack --config webpack.server.config.js --color",
     "dist": "run-p -c dist:*",
     "lint": "eslint --fix 'src/**/*.ts'",
-    "prepublishOnly": "tsc --project src/main/resources/tsconfig.server.json --declarationDir build/types --emitDeclarationOnly true --declaration true && cp -r ./build/types/lib/turbo-streams/* .",
+    "prepublishOnly": "tsc --project src/main/resources/tsconfig.server.json --declarationDir build/types --emitDeclarationOnly true --declaration true && cp -r ./build/types/lib/cvpartner/* .",
     "postpublish": "rm ./*.d.ts"
   },
   "devDependencies": {

@@ -38,6 +38,8 @@ export function run(): void {
   const [changed, unchanged] = cvPartnerEmployees.reduce((updateResult, employee, index) => {
     const cvPartnerProfile = fetchEmployeeProfile(employee.id, employee.default_cv_id);
 
+    //image.url excluded because of constant changes to url
+    delete employee.image;
     const currentEmployee = getCVPartnerEmployeeByEmail(employee.email);
 
     const contentHasChanged = currentEmployee
