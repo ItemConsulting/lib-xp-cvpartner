@@ -22,6 +22,7 @@ type UpdateResult = [changed: number, unchanged: number];
 const INITIAL_UPDATE_RESULT: UpdateResult = [0, 0];
 
 export function run(): void {
+  const startTime = new Date().getTime();
   //Check if repo exists; create
   if (getRepo(SOURCE_CVPARTNER_EMPLOYEES.repoId) === null) {
     createRepo({
@@ -87,7 +88,13 @@ export function run(): void {
 
   connection.refresh("ALL");
 
-  log.info(`Updated repo "${SOURCE_CVPARTNER_EMPLOYEES.repoId}" with ${changed} changes and ${unchanged} unchanged`);
+  const endTime = new Date().getTime();
+
+  log.info(
+    `Updated repo "${SOURCE_CVPARTNER_EMPLOYEES.repoId}" with ${changed} changes and ${unchanged} unchanged in ${
+      (endTime - startTime) / 1000
+    } seconds`
+  );
 }
 
 function updateCounter([changed, unchanged]: UpdateResult, contentHasChanged: boolean): UpdateResult {
