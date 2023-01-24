@@ -2,7 +2,8 @@ import { request } from "/lib/http-client";
 
 const CVPARTNER_USERS_PATH = "/api/v1/users";
 const CVPARTNER_PROFILE_PATH = "/api/v3/cvs/";
-export function fetchEmployees(): Array<CVPartnerEmployee> {
+const PAGE_SIZE = 100;
+export function fetchEmployees(offset = 0): Array<CVPartnerEmployee> {
   const res = request({
     url: `${getCVPartnerBaseUrl()}${CVPARTNER_USERS_PATH}`,
     contentType: "application/json",
@@ -11,12 +12,13 @@ export function fetchEmployees(): Array<CVPartnerEmployee> {
       Authorization: `Bearer ${getEmployeeApiKey()}`,
     },
     params: {
-      offset: "0",
+      offset: offset.toString(),
     },
   });
 
   if (res.status === 200 && res.body) {
-    return JSON.parse(res.body) as Array<CVPartnerEmployee>;
+    const response = JSON.parse(res.body) as Array<CVPartnerEmployee>;
+    return response.length < PAGE_SIZE ? response : response.concat(fetchEmployees(offset + PAGE_SIZE));
   } else {
     throw "Could not get employees from CV-Partner";
   }
