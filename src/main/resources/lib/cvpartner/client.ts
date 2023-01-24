@@ -2,32 +2,25 @@ import { request } from "/lib/http-client";
 
 const CVPARTNER_USERS_PATH = "/api/v1/users";
 const CVPARTNER_PROFILE_PATH = "/api/v3/cvs/";
-export function fetchEmployees(): Array<CVPartnerEmployee> {
-  const cvPartnerEmployees: Array<CVPartnerEmployee> = [];
-  let offset = 0;
-  while (true) {
-    const res = request({
-      url: `${getCVPartnerBaseUrl()}${CVPARTNER_USERS_PATH}`,
-      contentType: "application/json",
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${getEmployeeApiKey()}`,
-      },
-      params: {
-        offset: `${offset}`,
-      },
-    });
+const PAGE_SIZE = 100;
+export function fetchEmployees(offset = 0): Array<CVPartnerEmployee> {
+  const res = request({
+    url: `${getCVPartnerBaseUrl()}${CVPARTNER_USERS_PATH}`,
+    contentType: "application/json",
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${getEmployeeApiKey()}`,
+    },
+    params: {
+      offset: offset.toString(),
+    },
+  });
 
-    if (res.status === 200 && res.body) {
-      const response = JSON.parse(res.body) as Array<CVPartnerEmployee>;
-      cvPartnerEmployees.push(...response);
-      if (response.length < 100) {
-        return cvPartnerEmployees;
-      }
-      offset += 100;
-    } else {
-      throw "Could not get employees from CV-Partner";
-    }
+  if (res.status === 200 && res.body) {
+    const response = JSON.parse(res.body) as Array<CVPartnerEmployee>;
+    return response.length < PAGE_SIZE ? response : response.concat(fetchEmployees(offset + PAGE_SIZE));
+  } else {
+    throw "Could not get employees from CV-Partner";
   }
 }
 
