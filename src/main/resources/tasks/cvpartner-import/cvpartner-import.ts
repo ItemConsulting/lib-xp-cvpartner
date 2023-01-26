@@ -62,13 +62,15 @@ export function run(): void {
           data,
         });
 
-        send({
-          type: "cvpartner.image",
-          data: {
-            imageUrl,
-            id: employee.id,
-          },
-        });
+        if (imageUrl) {
+          send({
+            type: "cvpartner.image",
+            data: {
+              imageUrl,
+              id: employee.id,
+            },
+          });
+        }
       } else if (contentHasChanged) {
         const data = connection.modify<CVPartnerEmployeeNode>({
           key: currentEmployee._id,
