@@ -39,6 +39,8 @@ export function run(): void {
   const [changed, unchanged] = cvPartnerEmployees.reduce((updateResult, employee, index) => {
     const cvPartnerProfile = fetchEmployeeProfile(employee.id, employee.default_cv_id);
 
+    //image save to employee content
+    const imageUrl = employee.image?.url;
     //image.url excluded because of constant changes to url
     delete employee.image;
     const currentEmployee = getCVPartnerEmployeeByEmail(employee.email);
@@ -58,6 +60,14 @@ export function run(): void {
         send({
           type: "cvpartner.create",
           data,
+        });
+
+        send({
+          type: "cvpartner.image",
+          data: {
+            imageUrl,
+            id: employee.id,
+          },
         });
       } else if (contentHasChanged) {
         const data = connection.modify<CVPartnerEmployeeNode>({
