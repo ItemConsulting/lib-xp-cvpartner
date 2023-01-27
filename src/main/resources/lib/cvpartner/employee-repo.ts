@@ -61,9 +61,7 @@ export interface CVPartnerEmployeeNode {
   };
 }
 
-export interface CVPartnerEmployeeImage {
-  data: {
-    imageUrl: string;
-    id: string;
-  };
+export interface CVPartnerImageEventData {
+  imageUrl: string;
+  id: string;
 }
