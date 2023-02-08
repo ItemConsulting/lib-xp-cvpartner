@@ -54,6 +54,7 @@ export function run(): void {
         const data = connection.create<CVPartnerEmployeeNode>({
           _name: sanitize(employee.email),
           _inheritsPermissions: true,
+          type: "no.item.cvpartner:employee",
           data: { cvPartnerEmployee: employee, cvPartnerEmployeeProfile: cvPartnerProfile },
         });
 
