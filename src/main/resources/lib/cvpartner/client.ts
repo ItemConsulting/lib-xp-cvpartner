@@ -214,7 +214,7 @@ export interface CustomTagCategory {
 
 export interface Values {
   no: string;
-  en: string;
+  int?: string;
 }
 
 export interface Image {
