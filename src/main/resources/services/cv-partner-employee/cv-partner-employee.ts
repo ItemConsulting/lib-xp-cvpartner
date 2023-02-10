@@ -18,7 +18,7 @@ export function get(req: CustomSelectorServiceRequest): CustomSelectorServiceRes
         total: cvPartnerEmployees.length,
         hits: cvPartnerEmployees.map((employee) => {
           return {
-            id: employee._id,
+            id: employee.data.cvPartnerEmployee.id,
             displayName: employee.data.cvPartnerEmployee.name + ` (${employee.data.cvPartnerEmployee.email})`,
             description: employee.data.cvPartnerEmployee.role ?? "",
             iconUrl: employee.data.cvPartnerEmployee.image?.url ?? "",
@@ -64,7 +64,7 @@ export function get(req: CustomSelectorServiceRequest): CustomSelectorServiceRes
       total: result.total,
       hits: hits.map((employee) => {
         return {
-          id: employee._id,
+          id: employee.data.cvPartnerEmployee.id,
           displayName: employee.data.cvPartnerEmployee.name + ` (${employee.data.cvPartnerEmployee.email})`,
           description: employee.data.cvPartnerEmployee.role ?? "",
           iconUrl: employee.data.cvPartnerEmployee.image?.url ?? "",

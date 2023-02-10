@@ -48,14 +48,24 @@ export function getCVPartnerEmployeesByIds(ids: Array<string>): Array<Node<CVPar
   return forceArray(connection.get<CVPartnerEmployeeNode>(res));
 }
 
-export function getCVPartnerEmployeeById(id: string): Node<CVPartnerEmployeeNode> | null {
+export function getCVPartnerEmployeeById(cvPartnerId: string): Node<CVPartnerEmployeeNode> | undefined {
   const connection = connect(SOURCE_CVPARTNER_EMPLOYEES);
 
-  return connection.get<CVPartnerEmployeeNode>(id);
+  const hit = connection.query({
+    count: 1,
+    filters: {
+      hasValue: {
+        field: "data.cvPartnerEmployee.id",
+        values: [cvPartnerId],
+      },
+    },
+  }).hits[0];
+
+  return hit?.id ? connection.get<CVPartnerEmployeeNode>(hit.id) ?? undefined : undefined;
 }
 
 export interface CVPartnerEmployeeNode {
-  type: "no.item.cvpartner:employee",
+  type: "no.item.cvpartner:employee";
   data: {
     cvPartnerEmployee: CVPartnerEmployee;
     cvPartnerEmployeeProfile?: CVPartnerEmployeeProfile;
