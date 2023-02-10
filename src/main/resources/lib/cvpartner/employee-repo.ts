@@ -48,12 +48,6 @@ export function getCVPartnerEmployeesByIds(ids: Array<string>): Array<Node<CVPar
   return forceArray(connection.get<CVPartnerEmployeeNode>(res));
 }
 
-export function getCVPartnerEmployeeById(id: string): Node<CVPartnerEmployeeNode> | null {
-  const connection = connect(SOURCE_CVPARTNER_EMPLOYEES);
-
-  return connection.get<CVPartnerEmployeeNode>(id);
-}
-
 export interface CVPartnerEmployeeNode {
   type: "no.item.cvpartner:employee",
   data: {
