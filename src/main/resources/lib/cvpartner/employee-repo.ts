@@ -55,6 +55,7 @@ export function getCVPartnerEmployeeById(id: string): Node<CVPartnerEmployeeNode
 }
 
 export interface CVPartnerEmployeeNode {
+  type: "no.item.cvpartner:employee",
   data: {
     cvPartnerEmployee: CVPartnerEmployee;
     cvPartnerEmployeeProfile?: CVPartnerEmployeeProfile;
