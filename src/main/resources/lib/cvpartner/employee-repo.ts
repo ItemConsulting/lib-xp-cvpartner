@@ -34,12 +34,9 @@ export function getCVPartnerEmployeesByIds(ids: Array<string>): Array<Node<CVPar
     .query({
       count: ids.length,
       filters: {
-        boolean: {
-          must: {
-            ids: {
-              values: ids,
-            },
-          },
+        hasValue: {
+          field: "data.cvPartnerEmployee.id",
+          values: ids
         },
       },
     })
