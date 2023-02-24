@@ -1,8 +1,4 @@
-import {
-  CVPartnerEmployeeNode,
-  getCVPartnerEmployeesByIds,
-  SOURCE_CVPARTNER_EMPLOYEES,
-} from "/lib/cvpartner/employee-repo";
+import { CVPartnerEmployeeNode, getCVPartnerEmployeesByIds, SOURCE_CVPARTNER_EMPLOYEES } from "/lib/cvpartner";
 import { CustomSelectorServiceRequest, CustomSelectorServiceResponse } from "@item-enonic-types/global/controller";
 import { forceArray } from "/lib/cvpartner/utils";
 import { connect } from "/lib/xp/node";

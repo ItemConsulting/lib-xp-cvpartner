@@ -10,11 +10,7 @@ import { send } from "/lib/xp/event";
 import { progress } from "/lib/xp/task";
 import { sanitize } from "/lib/xp/common";
 
-import {
-  CVPartnerEmployeeNode,
-  getCVPartnerEmployeeByEmail,
-  SOURCE_CVPARTNER_EMPLOYEES,
-} from "/lib/cvpartner/employee-repo";
+import { CVPartnerEmployeeNode, getCVPartnerEmployeeByEmail, SOURCE_CVPARTNER_EMPLOYEES } from "/lib/cvpartner";
 import { notNullOrUndefined } from "/lib/cvpartner/utils";
 
 type UpdateResult = [changed: number, unchanged: number];
