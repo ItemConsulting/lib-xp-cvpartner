@@ -36,7 +36,7 @@ export function getCVPartnerEmployeesByIds(ids: Array<string>): Array<Node<CVPar
       filters: {
         hasValue: {
           field: "data.cvPartnerEmployee.id",
-          values: ids
+          values: ids,
         },
       },
     })
