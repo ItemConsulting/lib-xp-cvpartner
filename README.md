@@ -5,8 +5,8 @@ This library is an integration to Enonic XP application code for persons, referr
 [![](https://jitpack.io/v/no.item/lib-xp-cvpartner.svg)](https://jitpack.io/#no.item/lib-xp-cvpartner)
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/ItemConsulting/lib-xp-cvpartner/raw/main/docs/icon2.svg?sanitize=true">
-  <img alt="Logo" src="https://github.com/ItemConsulting/lib-xp-cvpartner/raw/main/docs/icon.svg?sanitize=true" width="150">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/ItemConsulting/lib-xp-cvpartner/raw/main/docs/iconwhite.svg?sanitize=true">
+  <img alt="Logo" src="https://github.com/ItemConsulting/lib-xp-cvpartner/raw/main/docs/icondark.svg?sanitize=true" width="150">
 </picture>
 
 ## Installation
