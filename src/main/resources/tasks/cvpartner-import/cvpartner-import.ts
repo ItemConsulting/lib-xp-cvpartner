@@ -1,9 +1,4 @@
-import {
-  CVPartnerEmployee,
-  CVPartnerEmployeeProfile,
-  fetchEmployeeProfile,
-  fetchEmployees,
-} from "/lib/cvpartner/client";
+import { CVPartnerEmployeeProfile, fetchEmployeeProfile, fetchEmployees } from "/lib/cvpartner/client";
 import { create as createRepo, get as getRepo } from "/lib/xp/repo";
 import { connect } from "/lib/xp/node";
 import { send } from "/lib/xp/event";
@@ -37,13 +32,20 @@ export function run(): void {
 
     //image save to employee content
     const imageUrl = employee.image?.url;
-    //image.url excluded because of constant changes to url
-    delete employee.image;
     const currentEmployee = getCVPartnerEmployeeByEmail(employee.email);
 
-    const contentHasChanged = currentEmployee
-      ? prepareForComparison(currentEmployee.data.cvPartnerEmployee) !== prepareForComparison(employee)
+    const employeeContentHasChanged = currentEmployee
+      ? currentEmployee.data.cvPartnerEmployee.updated_at !== employee.updated_at
       : true;
+
+    const currentEmployeeProfile = currentEmployee?.data.cvPartnerEmployeeProfile;
+
+    const employeeProfileHasChanged =
+      cvPartnerProfile && currentEmployeeProfile
+        ? currentEmployeeProfile.updated_at !== cvPartnerProfile.updated_at
+        : true;
+
+    const contentHasChanged = employeeContentHasChanged || employeeProfileHasChanged;
 
     try {
       if (!currentEmployee) {
@@ -108,16 +110,6 @@ export function run(): void {
 
 function updateCounter([changed, unchanged]: UpdateResult, contentHasChanged: boolean): UpdateResult {
   return contentHasChanged ? [changed + 1, unchanged] : [changed, unchanged + 1];
-}
-
-function prepareForComparison(o: CVPartnerEmployee): string {
-  //eliminate all the null, empty strings and empty array values from the data
-  const obj = JSON.parse(JSON.stringify(o), (key, value) =>
-    value === null || value === "" || (value instanceof Array && !value.length) ? undefined : value
-  );
-
-  //Handle arrays with one object as object per XP requirements
-  return JSON.stringify(obj).replace(/]|[[]/g, "");
 }
 
 export function getBiography(cvPartnerProfile: CVPartnerEmployeeProfile): string | undefined {
