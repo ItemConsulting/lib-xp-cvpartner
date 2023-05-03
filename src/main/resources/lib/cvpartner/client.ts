@@ -4,42 +4,50 @@ const CVPARTNER_USERS_PATH = "/api/v1/users";
 const CVPARTNER_PROFILE_PATH = "/api/v3/cvs/";
 const PAGE_SIZE = 100;
 export function fetchEmployees(offset = 0): Array<CVPartnerEmployee> {
-  const res = request({
-    url: `${getCVPartnerBaseUrl()}${CVPARTNER_USERS_PATH}`,
-    contentType: "application/json",
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${getEmployeeApiKey()}`,
-    },
-    params: {
-      offset: offset.toString(),
-    },
-  });
+  const url = `${getCVPartnerBaseUrl()}${CVPARTNER_USERS_PATH}`;
 
-  if (res.status === 200 && res.body) {
-    const response = JSON.parse(res.body) as Array<CVPartnerEmployee>;
-    return response.length < PAGE_SIZE ? response : response.concat(fetchEmployees(offset + PAGE_SIZE));
-  } else {
-    throw "Could not get employees from CV-Partner";
+  if (url) {
+    const res = request({
+      url,
+      contentType: "application/json",
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${getEmployeeApiKey()}`,
+      },
+      params: {
+        offset: offset.toString(),
+      },
+    });
+
+    if (res.status === 200 && res.body) {
+      const response = JSON.parse(res.body) as Array<CVPartnerEmployee>;
+      return response.length < PAGE_SIZE ? response : response.concat(fetchEmployees(offset + PAGE_SIZE));
+    } else {
+      throw "Could not get employees from CV-Partner";
+    }
   }
+  return [];
 }
 
 export function fetchEmployeeProfile(userId: string, cvId: string): CVPartnerEmployeeProfile | undefined {
-  const res = request({
-    url: `${getCVPartnerBaseUrl()}${CVPARTNER_PROFILE_PATH}/${userId}/${cvId}`,
-    contentType: "application/json",
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${getEmployeeApiKey()}`,
-    },
-  });
+  const url = `${getCVPartnerBaseUrl()}${CVPARTNER_PROFILE_PATH}/${userId}/${cvId}`;
+  if (url) {
+    const res = request({
+      url,
+      contentType: "application/json",
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${getEmployeeApiKey()}`,
+      },
+    });
 
-  if (res.status === 200 && res.body) {
-    return JSON.parse(res.body) as CVPartnerEmployeeProfile;
-  } else {
-    log.warning("Could not get CVPartner Employee profile for userId: " + userId + " with cvId: " + cvId);
-    return undefined;
+    if (res.status === 200 && res.body) {
+      return JSON.parse(res.body) as CVPartnerEmployeeProfile;
+    } else {
+      log.warning("Could not get CVPartner Employee profile for userId: " + userId + " with cvId: " + cvId);
+    }
   }
+  return undefined;
 }
 
 function getEmployeeApiKey(): string {
