@@ -1,14 +1,13 @@
 import { request } from "/lib/http-client";
+import { isEmptyOrUndefined } from "/lib/cvpartner/utils";
 
 const CVPARTNER_USERS_PATH = "/api/v1/users";
 const CVPARTNER_PROFILE_PATH = "/api/v3/cvs/";
 const PAGE_SIZE = 100;
 export function fetchEmployees(offset = 0): Array<CVPartnerEmployee> {
-  const url = `${getCVPartnerBaseUrl()}${CVPARTNER_USERS_PATH}`;
-
-  if (url) {
+  if (!isEmptyOrUndefined(getCVPartnerBaseUrl())) {
     const res = request({
-      url,
+      url: `${getCVPartnerBaseUrl()}${CVPARTNER_USERS_PATH}`,
       contentType: "application/json",
       method: "GET",
       headers: {
@@ -30,10 +29,9 @@ export function fetchEmployees(offset = 0): Array<CVPartnerEmployee> {
 }
 
 export function fetchEmployeeProfile(userId: string, cvId: string): CVPartnerEmployeeProfile | undefined {
-  const url = `${getCVPartnerBaseUrl()}${CVPARTNER_PROFILE_PATH}/${userId}/${cvId}`;
-  if (url) {
+  if (!isEmptyOrUndefined(getCVPartnerBaseUrl()) && !isEmptyOrUndefined(userId) && !isEmptyOrUndefined(cvId)) {
     const res = request({
-      url,
+      url: `${getCVPartnerBaseUrl()}${CVPARTNER_PROFILE_PATH}/${userId}/${cvId}`,
       contentType: "application/json",
       method: "GET",
       headers: {
