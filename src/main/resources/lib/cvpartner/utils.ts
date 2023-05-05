@@ -8,3 +8,7 @@ export function forceArray<A>(data: A | Array<A> | undefined | null): ReadonlyAr
 export function notNullOrUndefined<T>(val: T | null | undefined): val is T {
   return val !== null && val !== undefined;
 }
+
+export function isEmptyOrUndefined(str?: string | null): str is string {
+  return str === undefined || str === null || str === "";
+}

@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-  include "no.item:lib-xp-cvpartner:0.1.0"
+  include "no.item:lib-xp-cvpartner:0.0.1"
 }
 ```
 
