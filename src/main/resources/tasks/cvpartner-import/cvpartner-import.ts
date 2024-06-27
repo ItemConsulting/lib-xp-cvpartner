@@ -2,7 +2,7 @@ import { CVPartnerEmployeeProfile, fetchEmployeeProfile, fetchEmployees } from "
 import { create as createRepo, get as getRepo } from "/lib/xp/repo";
 import { connect } from "/lib/xp/node";
 import { send } from "/lib/xp/event";
-import { progress } from "/lib/xp/task";
+import { progress, sleep } from "/lib/xp/task";
 import { sanitize } from "/lib/xp/common";
 
 import { CVPartnerEmployeeNode, getCVPartnerEmployeeByEmail, SOURCE_CVPARTNER_EMPLOYEES } from "/lib/cvpartner";
@@ -11,6 +11,16 @@ import { notNullOrUndefined } from "/lib/cvpartner/utils";
 type UpdateResult = [changed: number, unchanged: number];
 
 const INITIAL_UPDATE_RESULT: UpdateResult = [0, 0];
+
+function rateLimit() {
+  const maxReqsPerSecond = 5;
+  const maxReqsPerMinute = 150;
+  const rateLimitMillis = Math.max(
+    1_000 / maxReqsPerSecond,
+    60_000 / maxReqsPerMinute
+  );
+  sleep(rateLimitMillis);
+}
 
 export function run(): void {
   const startTime = new Date().getTime();
@@ -29,6 +39,7 @@ export function run(): void {
 
   const [changed, unchanged] = cvPartnerEmployees.reduce((updateResult, employee, index) => {
     const cvPartnerProfile = fetchEmployeeProfile(employee.id, employee.default_cv_id);
+    rateLimit();
 
     //image save to employee content
     const imageUrl = employee.image?.url;
