@@ -68,10 +68,10 @@ export interface CVPartnerEmployee {
   user_id: string;
   _id: string;
   id: string;
-  company_id: string;
-  company_name: string;
-  company_subdomains?: Array<string> | null;
-  company_group_ids?: Array<string> | null;
+  compunknown_id: string;
+  compunknown_name: string;
+  compunknown_subdomains?: Array<string> | null;
+  compunknown_group_ids?: Array<string> | null;
   email: string;
   external_unique_id?: string;
   upn?: string;
@@ -149,7 +149,7 @@ export interface CVPartnerEmployeeProfile {
   version: number;
   name: string;
   user_id: string;
-  company_id: string;
+  compunknown_id: string;
   external_unique_id: null;
   email: string;
   country_code: string;
@@ -161,12 +161,12 @@ export interface CVPartnerEmployeeProfile {
   template_document_type: string;
   default_word_template_id: null;
   default_ppt_template_id: null;
-  project_experiences: any[];
-  certifications: any[];
-  courses: any[];
-  educations: any[];
-  cv_roles: any[];
-  highlighted_roles: any[];
+  project_experiences: unknown[];
+  certifications: unknown[];
+  courses: unknown[];
+  educations: unknown[];
+  cv_roles: unknown[];
+  highlighted_roles: unknown[];
   image: Image;
   can_write: boolean;
 }
@@ -253,6 +253,6 @@ export interface KeyQualification {
   updated_at: Date;
   version: number;
   category?: Values;
-  exclude_tags?: any[];
+  exclude_tags?: unknown[];
   uncategorized?: boolean;
 }
