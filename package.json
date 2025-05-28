@@ -1,6 +1,6 @@
 {
   "name": "@item-enonic-types/lib-cvpartner",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "Type definitions for lib-cvpartner",
   "license": "MIT",
   "files": [
