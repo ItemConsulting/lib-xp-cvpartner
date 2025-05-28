@@ -1,8 +1,11 @@
 # CV-partner library for Enonic XP
 
-This library is an integration to Enonic XP application code for persons, referred to as employees, registered in CV-partner. This enables the ability to import employees and their profiles in CV-partner into `Enonic XP node library` and create content for these respectively. This library _create and send events_ which operate on new and modified data from CV-partners user APIs.
+This library is an integration to Enonic XP application code for persons, referred to as employees, registered in CV-partner.
+This enables the ability to import employees and their profiles in CV-partner into **Enonic XP node library** and create 
+content for these respectively. This library _create and send events_ which operate on new and modified data from 
+CV-partners user APIs.
 
-[![](https://jitpack.io/v/no.item/lib-xp-cvpartner.svg)](https://jitpack.io/#no.item/lib-xp-cvpartner)
+[![](https://repo.itemtest.no/api/badge/latest/releases/no/item/lib-xp-cvpartner)](https://repo.itemtest.no/#/releases/no/item/lib-xp-cvpartner)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/ItemConsulting/lib-xp-cvpartner/raw/main/docs/iconwhite.svg?sanitize=true">
@@ -17,11 +20,17 @@ To install this library you need to add a new dependency to your app's build.gra
 
 ```groovy
 repositories {
-  maven { url 'https://jitpack.io' }
+  maven { url "https://repo.itemtest.no/releases" }
 }
 
 dependencies {
-  include "no.item:lib-xp-cvpartner:0.0.1"
+  include "com.enonic.xp:lib-common:${xpVersion}"
+  include "com.enonic.xp:lib-event:${xpVersion}"
+  include "com.enonic.xp:lib-node:${xpVersion}"
+  include "com.enonic.xp:lib-repo:${xpVersion}"
+  include "com.enonic.xp:lib-task:${xpVersion}"
+  
+  include "no.item:lib-xp-cvpartner:0.0.4"
 }
 ```
 
@@ -52,11 +61,11 @@ run(
 *You can select an employee in your Enonic XP application code with a `CustomSelector`:*
 ```xml
 <input name="cvPartnerEmployeeId" type="CustomSelector">
-    <label i18n="employee.cvPartnerEmployeeId">Profile from CV-Partner</label>
-    <occurrences minimum="0" maximum="1"/>
-    <config>
-        <service>cv-partner-employee</service>
-    </config>
+  <label i18n="employee.cvPartnerEmployeeId">Profile from CV-Partner</label>
+  <occurrences minimum="0" maximum="1"/>
+  <config>
+    <service>cv-partner-employee</service>
+  </config>
 </input>
 ```
 
@@ -90,13 +99,15 @@ cvPartnerApiKey=<api key>
 - `cvPartnerBaseUrl`, Base url to fetch data about cv-partner employee profiles. referenced `app.config.cvPartnerBaseUrl`
 - `cvPartnerApiKey` key identifier used to authenticate request for endpoints such as `cvPartnerBaseUrl/{path}` + . referenced `app.config.cvPartnerApiKey`
 
-### Building
+## Building
 
-To build the project run the following code
+To build the project, run the following command
 
 ```bash
-./gradlew build
+enonic project build
 ```
+
+You will find the jar-file at _./build/libs/lib-xp-cvpartner-x.x.x.jar_
 
 ### Deploy locally
 
@@ -105,7 +116,9 @@ Deploy locally for testing purposes:
 ```bash
 ./gradlew publishToMavenLocal
 ```
-## Deploy to Jitpack
 
-Go to the [Jitpack page for lib-xp-cvpartner](https://jitpack.io/#no.item/lib-xp-cvpartner) to deploy from GitHub (after
-[creating a new versioned release](https://github.com/ItemConsulting/lib-xp-cvpartner/releases/new)).
+## Deploy to Maven
+
+```bash
+./gradlew publish -P com.enonic.xp.app.production=true
+```

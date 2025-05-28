@@ -1,11 +1,11 @@
-import { CVPartnerEmployeeProfile, fetchEmployeeProfile, fetchEmployees } from "/lib/cvpartner/client";
+import { fetchEmployeeProfile, fetchEmployees, type CVPartnerEmployeeProfile } from "/lib/cvpartner/client";
 import { create as createRepo, get as getRepo } from "/lib/xp/repo";
 import { connect } from "/lib/xp/node";
 import { send } from "/lib/xp/event";
 import { progress, sleep } from "/lib/xp/task";
 import { sanitize } from "/lib/xp/common";
 
-import { CVPartnerEmployeeNode, getCVPartnerEmployeeByEmail, SOURCE_CVPARTNER_EMPLOYEES } from "/lib/cvpartner";
+import { getCVPartnerEmployeeByEmail, SOURCE_CVPARTNER_EMPLOYEES, type CVPartnerEmployeeNode } from "/lib/cvpartner";
 import { notNullOrUndefined } from "/lib/cvpartner/utils";
 
 type UpdateResult = [changed: number, unchanged: number];
@@ -15,10 +15,7 @@ const INITIAL_UPDATE_RESULT: UpdateResult = [0, 0];
 function rateLimit() {
   const maxReqsPerSecond = 5;
   const maxReqsPerMinute = 150;
-  const rateLimitMillis = Math.max(
-    1_000 / maxReqsPerSecond,
-    60_000 / maxReqsPerMinute
-  );
+  const rateLimitMillis = Math.max(1_000 / maxReqsPerSecond, 60_000 / maxReqsPerMinute);
   sleep(rateLimitMillis);
 }
 
@@ -115,7 +112,7 @@ export function run(): void {
   log.info(
     `Updated repo "${SOURCE_CVPARTNER_EMPLOYEES.repoId}" with ${changed} changes and ${unchanged} unchanged in ${
       (endTime - startTime) / 1000
-    } seconds`
+    } seconds`,
   );
 }
 

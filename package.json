@@ -8,45 +8,34 @@
     "tsconfig.json"
   ],
   "scripts": {
-    "build:server": "webpack --config webpack.server.config.js --color",
-    "build": "run-p -c build:*",
-    "dist:server": "cross-env NODE_ENV=production webpack --config webpack.server.config.js --color",
-    "dist": "run-p -c dist:*",
+    "build": "node tsup/anyServerFiles.js && npx tsup -d build/resources/main",
+    "check": "concurrently -c auto -g --timings npm:check:types npm:lint",
+    "check:types": "node tsup/anyServerFiles.js && npx tsc --noEmit -p src/main/resources/tsconfig.json",
     "lint": "eslint --fix 'src/**/*.ts'",
-    "prepublishOnly": "tsc --project src/main/resources/tsconfig.server.json --declarationDir build/types --emitDeclarationOnly true --declaration true && cp -r ./build/types/lib/cvpartner/* .",
+    "release": "npm run build",
+    "versioning": "npx changeset version && npm i --package-lock-only && NEW_VERSION=$(node -p \"require('./package.json').version\") && sed -i \"s/version.*/version = ${NEW_VERSION}/\" gradle.properties",
+    "prepublishOnly": "tsc --project src/main/resources/tsconfig.json --declarationDir build/types --emitDeclarationOnly true --declaration true && cp -r ./build/types/lib/cvpartner/* .",
     "postpublish": "rm ./*.d.ts"
   },
   "devDependencies": {
-    "@babel/core": "^7.19.6",
-    "@babel/plugin-proposal-class-properties": "^7.18.6",
-    "@babel/preset-env": "^7.19.4",
-    "@babel/register": "^7.18.9",
-    "@typescript-eslint/eslint-plugin": "^5.41.0",
-    "@typescript-eslint/parser": "^5.41.0",
-    "babel-loader": "^8.2.5",
-    "browserslist": "^4.21.4",
-    "browserslist-config-enonic": "^1.0.7",
-    "cross-env": "^7.0.3",
-    "eslint": "^8.26.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "glob": "^8.0.3",
-    "npm-run-all": "^4.1.5",
-    "prettier": "^2.7.1",
-    "ramda": "^0.28.0",
-    "ts-loader": "^9.4.1",
-    "typescript": "^4.8.4",
-    "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0"
-  },
-  "dependencies": {
-    "enonic-types": "^7.11.1"
-  },
-  "browserslist": [
-    "extends browserslist-config-enonic"
-  ],
-  "engines": {
-    "node": ">= 16.13.1",
-    "npm": ">= 8.1.2"
+    "@changesets/cli": "^2.29.4",
+    "@enonic-types/core": "^7.15.1",
+    "@enonic-types/global": "^7.15.1",
+    "@enonic-types/lib-common": "^7.15.1",
+    "@enonic-types/lib-event": "^7.15.1",
+    "@enonic-types/lib-node": "^7.15.1",
+    "@enonic-types/lib-repo": "^7.15.1",
+    "@enonic-types/lib-task": "^7.15.1",
+    "@item-enonic-types/global": "^7.15.0",
+    "@item-enonic-types/lib-http-client": "^3.2.2",
+    "@swc/core": "^1.11.29",
+    "concurrently": "^9.1.2",
+    "eslint": "^9.26.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.4.0",
+    "prettier": "^3.5.3",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.33.0"
   }
 }

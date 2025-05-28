@@ -1,9 +1,16 @@
 import { CVPartnerEmployeeNode, getCVPartnerEmployeesByIds, SOURCE_CVPARTNER_EMPLOYEES } from "/lib/cvpartner";
-import { CustomSelectorServiceRequest, CustomSelectorServiceResponse } from "@item-enonic-types/global/controller";
 import { forceArray } from "/lib/cvpartner/utils";
 import { connect } from "/lib/xp/node";
 
-export function get(req: CustomSelectorServiceRequest): CustomSelectorServiceResponse {
+import type { Request, Response } from "@enonic-types/core";
+import type {
+  CustomSelectorServiceParams,
+  CustomSelectorServiceResponseBody,
+} from "@item-enonic-types/global/controller";
+
+export function get(
+  req: Request<{ params: CustomSelectorServiceParams }>,
+): Response<{ body: CustomSelectorServiceResponseBody }> {
   if (req.params.ids) {
     const cvPartnerEmployees = getCVPartnerEmployeesByIds(req.params.ids.split(","));
 

@@ -24,7 +24,7 @@ export function getCVPartnerEmployeeByEmail(email: string): Node<CVPartnerEmploy
     },
   }).hits[0];
 
-  return hit?.id ? connection.get<CVPartnerEmployeeNode>(hit.id) ?? undefined : undefined;
+  return hit?.id ? (connection.get<CVPartnerEmployeeNode>(hit.id) ?? undefined) : undefined;
 }
 
 export function getCVPartnerEmployeesByIds(ids: Array<string>): Array<Node<CVPartnerEmployeeNode>> {
@@ -58,7 +58,7 @@ export function getCVPartnerEmployeeById(cvPartnerId: string): Node<CVPartnerEmp
     },
   }).hits[0];
 
-  return hit?.id ? connection.get<CVPartnerEmployeeNode>(hit.id) ?? undefined : undefined;
+  return hit?.id ? (connection.get<CVPartnerEmployeeNode>(hit.id) ?? undefined) : undefined;
 }
 
 export interface CVPartnerEmployeeNode {
